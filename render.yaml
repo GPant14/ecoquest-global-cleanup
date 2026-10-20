@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ecoquest-global-cleanup
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: commit
