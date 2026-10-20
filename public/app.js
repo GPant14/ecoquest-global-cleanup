@@ -1,9 +1,10 @@
-const socket=io(),root=document.querySelector('#app');let state=null,session=JSON.parse(localStorage.getItem('ecoquestSession')||'null'),selected=null,message='';
+const socket=io(),root=document.querySelector('#app');let state=null,session=JSON.parse(localStorage.getItem('ecoquestSession')||'null'),selected=null,message='',teamMessages=[];
 const bins=[['recycle','♻️ Recycle'],['organic','🌱 Compost'],['landfill','🗑️ Landfill'],['hazard','🔋 E-waste']];
 const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function act(event,data,fn){socket.emit(event,data,r=>{if(!r?.ok){message=r?.error||'Please try again';draw()}else{message='';fn?.(r);draw()}})}
 socket.on('connect',()=>{if(session){act(session.host?'hostRejoin':'rejoin',session.host?{code:session.code}:{code:session.code,pid:session.pid},()=>{});}});
-socket.on('teamMessage',p=>{if(p.teamId!==session?.teamId)return;const t=state?.teams[p.teamId];if(t){t.chat.push(p.message);t.chat=t.chat.slice(-30);drawChat()}});
+socket.on('teamMessage',p=>{if(p.teamId!==session?.teamId)return;teamMessages.push(p.message);teamMessages=teamMessages.slice(-30);drawChat()});
+socket.on('teamHistory',p=>{if(session&&p.teamId===session.teamId){teamMessages=p.messages||[];drawChat()}});
 socket.on('moderation',m=>{message=m.text;drawChat()});
 socket.on('state',s=>{state=s;draw()});
 socket.on('position',p=>{const t=state?.teams[p.teamId],who=t?.players.find(x=>x.id===p.pid);if(who){who.x=p.x;who.y=p.y}if(p.teamId===session?.teamId){let el=document.querySelector('[data-player="'+p.pid+'"]');if(el&&p.pid!==session.pid){el.style.left=p.x+'%';el.style.top=p.y+'%'}}});
@@ -20,7 +21,7 @@ let walking=null;window.runTo=(x,y)=>{if(walking)clearInterval(walking);const te
 window.sort=bin=>{let id=state?.teams[session.teamId]?.players.find(p=>p.id===session.pid)?.carrying;if(id===null||id===undefined)return;act('sort',{itemId:id,bin},r=>{message=r.correct?'Great sorting! +'+r.points+(r.bonus?' (bonus +'+r.bonus+')':''):'Wrong bin — try again';})};
 window.sendChat=()=>{const el=document.querySelector('#chatEntry');if(!el)return;const text=el.value;el.value='';act('teamChat',{text})};
 window.signal=i=>act('teamSignal',{signal:['Follow me!','Waste near the river!','I need help!','Take waste to the bins!','You take the north side!','Great work, team!'][i]});
-function drawChat(){const el=document.querySelector('#chatMessages'),t=state?.teams[session?.teamId];if(el&&t){el.innerHTML=(t.chat||[]).slice(-20).map(m=>'<div class="chatmsg"><b>'+html(m.name)+'</b>: '+html(m.text)+'</div>').join('');el.scrollTop=el.scrollHeight}const feedback=document.querySelector('#chatFeedback');if(feedback)feedback.textContent=message||''}
+function drawChat(){const el=document.querySelector('#chatMessages'),t=state?.teams[session?.teamId];if(el&&t){el.innerHTML=teamMessages.slice(-20).map(m=>'<div class="chatmsg"><b>'+html(m.name)+'</b>: '+html(m.text)+'</div>').join('');el.scrollTop=el.scrollHeight}const feedback=document.querySelector('#chatFeedback');if(feedback)feedback.textContent=message||''}
 window.leave=()=>{localStorage.removeItem('ecoquestSession');location.reload()};
 function draw(){if(!session||!state){root.innerHTML='<main class="welcome"><div class="logo">🌍 ECOQUEST</div><h1>Global Cleanup Challenge</h1><p>Play together, clean our planet and earn points. Perfect for Google Meet breakout rooms.</p><div class="panels"><section class="card"><h2>🎙️ Facilitator</h2><p>Create one game code for four teams.</p><button onclick="create()">Host a new game</button></section><section class="card"><h2>🎒 Join the mission</h2><input id="code" maxlength="6" placeholder="6-character room code"><input id="name" maxlength="24" placeholder="Your name"><select id="team"><option value="0">🌿 Green Guardians</option><option value="1">🌊 Ocean Heroes</option><option value="2">🌎 Earth Rangers</option><option value="3">✨ Eco Explorers</option></select><button onclick="join()">Join team</button></section></div>'+(message?'<p class="error">'+html(message)+'</p>':'')+'</main>';return}
 let t=state.teams[session.teamId],host=session.host,rank=[...state.teams].sort((a,b)=>b.score-a.score),zone=state.zones.find(z=>z.id===t?.zone),playing=state.status==='playing';
