@@ -4,7 +4,7 @@ const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'
 function act(event,data,fn){socket.emit(event,data,r=>{if(!r?.ok){message=r?.error||'Please try again';draw()}else{message='';fn?.(r);draw()}})}
 socket.on('connect',()=>{if(session){act(session.host?'hostRejoin':'rejoin',session.host?{code:session.code}:{code:session.code,pid:session.pid},()=>{});}});
 socket.on('teamMessage',p=>{if(p.teamId!==session?.teamId)return;teamMessages.push(p.message);teamMessages=teamMessages.slice(-30);drawChat()});
-socket.on('teamHistory',p=>{if(session&&p.teamId===session.teamId){teamMessages=p.messages||[];drawChat()}});
+socket.on('teamHistory',p=>{if(!session||p.teamId===session.teamId){teamMessages=p.messages||[];drawChat()}});
 socket.on('moderation',m=>{message=m.text;drawChat()});
 socket.on('state',s=>{state=s;draw()});
 socket.on('position',p=>{const t=state?.teams[p.teamId],who=t?.players.find(x=>x.id===p.pid);if(who){who.x=p.x;who.y=p.y}if(p.teamId===session?.teamId){let el=document.querySelector('[data-player="'+p.pid+'"]');if(el&&p.pid!==session.pid){el.style.left=p.x+'%';el.style.top=p.y+'%'}}});
