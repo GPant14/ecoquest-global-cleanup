@@ -29,3 +29,8 @@
 .status{animation:statusGlow 2.2s infinite alternate}
 @keyframes statusGlow{to{box-shadow:0 0 0 5px #63cc8740}}
 @media(prefers-reduced-motion:reduce){.gameworld,.litter.popin,.character .person,.character.running .person,.character.running .feetdust,.status,.game-fx{animation:none!important}.character{transition:none!important}}
+
+/* Playful classroom-game identity inspired by modern live quiz dashboards */
+body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radial-gradient(circle at 94% 16%,#dcf6e4 0,transparent 32%),#f5f2ff;color:#312452}
+.welcome{max-width:1040px;margin:6vh auto}.welcome>.logo{font-weight:900;font-size:28px;color:#7242db;letter-spacing:2px}.welcome h1{font-size:clamp(40px,6vw,72px);font-weight:900;letter-spacing:-2px;color:#39216f}.welcome>p{font-size:19px}.panels{gap:25px}.panels .card{border:2px solid #e8dcff;box-shadow:0 15px 0 #ded1fb55,0 20px 38px #3d1f7530;border-radius:27px}.panels .card:first-child{background:#faf6ff}.panels .card:nth-child(2){background:#f4fcff}.panels button{background:#753ed6;padding:18px;font-size:18px;box-shadow:0 5px 0 #4d249c}.panels button:active{transform:translateY(4px);box-shadow:0 1px 0 #4d249c}.panels input,.panels select{text-align:center;font-weight:750;font-size:17px}.brand{color:#6535c2}header{border-bottom:3px solid #ded0fd}.status{background:#e5d9ff;color:#523198}.eyebrow{color:#7541d4}.modegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.modebtn{background:#7745d7;min-height:75px;white-space:normal}.modebtn:nth-child(2){background:#168da9}.code{background:#edddff}.code b{color:#6132be}.card{border-radius:20px}.team strong{color:#7141cf}
+@media(max-width:560px){.modegrid{grid-template-columns:1fr}.welcome{margin:3vh auto}}
