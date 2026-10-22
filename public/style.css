@@ -89,3 +89,18 @@ body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radi
 .gameworld.arena-market .lake,.gameworld.arena-square .lake{display:none}
 .gameworld.arena-harbour .tree1,.gameworld.arena-square .tree1{opacity:.4}
 .site-choice.active{border:3px solid #168b63;background:#dcf9e7;box-shadow:0 0 0 3px #bff4d8}
+
+/* Real matching illustration assets for arena cards and game world */
+.site-art{width:110px;height:78px;overflow:hidden;background:#ddecdf;border-radius:12px}
+.site-art img{display:block;width:100%;height:100%;object-fit:cover}
+.site-choice{min-height:106px}
+.site-choices{gap:14px}
+.gameworld.arena-park{background:#90c789 url('/arenas/park.svg') center center/cover no-repeat}
+.gameworld.arena-market{background:#dfc8a9 url('/arenas/market.svg') center center/cover no-repeat}
+.gameworld.arena-harbour{background:#96ced6 url('/arenas/harbour.svg') center center/cover no-repeat}
+.gameworld.arena-square{background:#d4cabc url('/arenas/square.svg') center center/cover no-repeat}
+.gameworld.arena-market .lake,.gameworld.arena-square .lake,.gameworld.arena-park .lake,.gameworld.arena-harbour .lake{display:none}
+.gameworld .pathline,.gameworld .tree,.gameworld .lake{display:none}
+.gameworld .litter{background:#fffef0;box-shadow:0 0 0 4px #fff8a7ad,0 6px 13px #15383380}
+.gameworld .character .person{font-size:39px}
+@media(max-width:630px){.site-art{width:92px;height:68px}.site-choice{min-height:85px}}
