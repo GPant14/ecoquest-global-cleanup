@@ -39,3 +39,29 @@ body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radi
 .format-picks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.format-picks button{min-height:125px;display:flex;flex-direction:column;justify-content:center;gap:10px;font-size:18px;text-align:center;background:#6d3fd2}.format-picks button+button{background:#008c9e;box-shadow:0 5px 0 #07596c}.format-picks button small{display:block;font-size:11px;opacity:.95}.team{padding:9px 0}.layout>aside{max-height:80vh;overflow:auto;scrollbar-width:thin}@media(max-width:650px){.format-picks{grid-template-columns:1fr}.format-picks button{min-height:82px}.layout>aside{max-height:none}}
 
 .entrychoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;margin:38px 0}.entrycard{min-height:260px;border-radius:28px;padding:32px 22px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:#fff;box-shadow:0 12px 0 #36266b30,0 20px 35px #2e23622b}.entrycard strong{font-size:clamp(23px,3vw,31px);font-weight:900}.entrycard small{max-width:270px;font-size:15px;line-height:1.5;font-weight:600}.entryicon{font-size:65px}.hostchoice{background:linear-gradient(135deg,#7645e2,#aa5cf0)}.playerchoice{background:linear-gradient(135deg,#0eaf9a,#168ad8)}.entryform{text-align:left;max-width:570px;margin:30px auto;background:#fff;border-radius:27px;padding:32px;box-shadow:0 18px 40px #3b287129}.entryform>h2{font-size:29px;text-align:center}.entryform>p{text-align:center}.entryform label{display:block;font-size:12px;font-weight:900;letter-spacing:1.5px;margin:12px 0 0}.entryform input{font-size:20px;font-weight:800;text-align:center;padding:18px}.entryform .joinbig{width:100%;padding:19px;background:#6840d5;font-size:22px;margin-top:16px}.backlink{background:#f2ecff;color:#5b30bd;box-shadow:none;font-size:14px}.hosthint{background:#ede5ff;padding:14px;border-radius:12px}@media(max-width:650px){.entrychoices{grid-template-columns:1fr}.entrycard{min-height:185px}.entryicon{font-size:42px}.entryform{padding:19px}}
+
+/* Gestalt-led landing screen: unified action group, deliberate hierarchy and contrast */
+.welcome{max-width:none;min-height:100vh;margin:0;padding:32px 22px 70px;background:radial-gradient(ellipse at 90% 0%,#d9f9df 0%,transparent 32%),radial-gradient(ellipse at 4% 98%,#e9e0ff 0%,transparent 34%),#f8f9ff}
+.landing-shell{max-width:900px;margin:0 auto}
+.landing-brand{display:flex;align-items:center;gap:12px;color:#26334b;font-weight:900;letter-spacing:.07em;font-size:17px;text-align:left}
+.landing-brand em{font-size:10px;font-style:normal;letter-spacing:.1em;display:block;color:#547265}
+.brand-mark{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:#e0f7e8;font-size:26px}
+.landing-intro{text-align:center;margin:clamp(35px,8vh,85px) auto 34px;max-width:700px}
+.overline{font-size:12px;color:#25895f;font-weight:900;letter-spacing:.17em}
+.landing-intro h1{font-size:clamp(48px,8vw,82px);letter-spacing:-.055em;line-height:1.02;margin:14px 0 18px;color:#172a38;font-weight:900}
+.landing-intro h1 span{color:#178e67}
+.landing-intro p{font-size:clamp(16px,2vw,20px);max-width:490px;margin:0 auto;color:#536477}
+.entrychoices{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 auto;max-width:800px}
+.entrycard{min-height:188px;display:flex;align-items:center;flex-direction:row;justify-content:flex-start;text-align:left;gap:18px;padding:25px;border-radius:25px;box-shadow:0 10px 25px #2e45511a;transition:transform .2s,box-shadow .2s;border:2px solid transparent}
+.entrycard:hover{transform:translateY(-4px);box-shadow:0 16px 32px #2e45512a}
+.entrycard:focus-visible{outline:4px solid #ffce66;outline-offset:4px}
+.entrycard .entryicon{flex:0 0 auto;font-size:40px;background:#ffffff2d;border-radius:18px;padding:14px}
+.entrycard .actioncopy{display:flex;flex:1;flex-direction:column;gap:8px}
+.entrycard strong{font-size:clamp(20px,2.5vw,26px);line-height:1.12;letter-spacing:-.02em}
+.entrycard small{font-size:13px;line-height:1.4;max-width:220px}
+.actionarrow{font-size:28px;align-self:center}
+.hostchoice{background:#41348b;color:#fff}.playerchoice{background:#078768;color:#fff}
+.landing-foot{text-align:center;font-size:13px;margin:24px auto;color:#667683}
+.entryform{max-width:570px;margin:0 auto;background:#fff;border-radius:25px}
+@media(max-width:700px){.entrychoices{grid-template-columns:1fr;gap:14px}.entrycard{min-height:145px;padding:20px}.landing-intro{margin:48px auto 30px}.welcome{padding:20px 15px 55px}}
+@media(prefers-reduced-motion:reduce){.entrycard{transition:none}.entrycard:hover{transform:none}}
