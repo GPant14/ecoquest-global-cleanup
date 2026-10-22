@@ -81,3 +81,11 @@ body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radi
 .comms-dock{position:fixed;right:18px;bottom:85px;width:min(370px,calc(100vw - 30px));max-height:min(520px,75vh);overflow:auto;z-index:31;background:#fff;border:2px solid #d9d6ee;box-shadow:0 18px 55px #20204642;padding:16px;border-radius:22px}.comms-title{display:flex;align-items:center;justify-content:space-between}.comms-title button{background:#eeeaf8;color:#35304f;padding:6px 12px}.comms-dock label{display:block;font-size:12px;font-weight:800;margin-top:12px}.comms-dock select{width:100%}.comms-dock .chatmessages{height:140px}.comms-dock form{display:flex;gap:7px;margin:8px 0}.comms-dock form input{flex:1;min-width:0}.comms-dock .quickchat{display:flex;gap:6px;flex-wrap:wrap}.comms-dock .quickchat button{font-size:11px;padding:9px}.comms-help{font-size:12px;margin:8px 0;color:#586e66}
 
 .sort-prompt{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#eef3ef;padding:16px;border-radius:14px;margin:14px 0;color:#37624d}.sort-prompt.ready{background:#fff0bd;border:3px solid #ffbd3b;animation:promptPulse 1.2s ease-in-out infinite alternate}.sort-prompt strong{font-size:16px}.sort-prompt span{font-size:14px}@keyframes promptPulse{to{box-shadow:0 0 0 6px #ffd25c35}}@media(prefers-reduced-motion:reduce){.sort-prompt.ready{animation:none}}
+
+/* Distinct arena appearances, without changing the game rules */
+.gameworld.arena-market{background:repeating-linear-gradient(90deg,transparent 0 53px,#f0cdab 54px 55px),repeating-linear-gradient(0deg,#efdfbd 0 53px,#e4cb9e 54px 55px)}
+.gameworld.arena-harbour{background:repeating-linear-gradient(90deg,transparent 0 53px,#8ecfd7 54px 55px),repeating-linear-gradient(0deg,#b9e2e6 0 53px,#81bac9 54px 55px)}
+.gameworld.arena-square{background:repeating-linear-gradient(90deg,transparent 0 53px,#c6c1d0 54px 55px),repeating-linear-gradient(0deg,#e7e3ed 0 53px,#c7c0d8 54px 55px)}
+.gameworld.arena-market .lake,.gameworld.arena-square .lake{display:none}
+.gameworld.arena-harbour .tree1,.gameworld.arena-square .tree1{opacity:.4}
+.site-choice.active{border:3px solid #168b63;background:#dcf9e7;box-shadow:0 0 0 3px #bff4d8}
