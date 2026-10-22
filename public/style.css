@@ -65,3 +65,9 @@ body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radi
 .entryform{max-width:570px;margin:0 auto;background:#fff;border-radius:25px}
 @media(max-width:700px){.entrychoices{grid-template-columns:1fr;gap:14px}.entrycard{min-height:145px;padding:20px}.landing-intro{margin:48px auto 30px}.welcome{padding:20px 15px 55px}}
 @media(prefers-reduced-motion:reduce){.entrycard{transition:none}.entrycard:hover{transform:none}}
+
+/* JDO Global Club Hunt identity */
+.landing-brand{gap:15px}.brand-mark{width:65px;height:65px;background:linear-gradient(135deg,#d5f9dd,#d9ebff);font-size:25px;border:2px solid white;box-shadow:0 5px 16px #14846426;letter-spacing:-10px;padding-right:11px}
+.landing-intro h1{font-size:clamp(54px,8vw,86px);letter-spacing:-.045em}
+.landing-intro h1 span{background:linear-gradient(120deg,#0e9b72,#32bba2);background-clip:text;-webkit-background-clip:text;color:transparent}
+.landing-intro .overline{color:#5b45b5}
