@@ -2,14 +2,15 @@ const socket=io(),root=document.querySelector('#app');let state=null,session=JSO
 const bins=[['recycle','♻️ Recycle'],['organic','🌱 Compost'],['landfill','🗑️ Landfill'],['hazard','🔋 E-waste']];
 const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function act(event,data,fn){socket.emit(event,data,r=>{if(!r?.ok){message=r?.error||'Please try again';draw()}else{message='';fn?.(r);draw()}})}
-socket.on('connect',()=>{if(session){act(session.host?'hostRejoin':'rejoin',session.host?{code:session.code}:{code:session.code,pid:session.pid},()=>{});}});
+function resetExpiredSession(){localStorage.removeItem('ecoquestSession');session=null;state=null;selected=null;teamMessages=[];message='';entryView='choice';draw();}
+socket.on('connect',()=>{if(!session)return;const saved=session;socket.emit(saved.host?'hostRejoin':'rejoin',saved.host?{code:saved.code}:{code:saved.code,pid:saved.pid},r=>{if(!r?.ok){resetExpiredSession();return;}message='';draw();});});
 socket.on('teamMessage',p=>{if(p.teamId!==session?.teamId)return;teamMessages.push(p.message);teamMessages=teamMessages.slice(-30);drawChat()});
 socket.on('teamHistory',p=>{if(!session||p.teamId===session.teamId){teamMessages=p.messages||[];drawChat()}});
 socket.on('moderation',m=>{message=m.text;drawChat()});
 socket.on('state',s=>{state=s;draw()});
 socket.on('position',p=>{const t=state?.teams[p.teamId],who=t?.players.find(x=>x.id===p.pid);if(who){who.x=p.x;who.y=p.y}if(p.teamId===session?.teamId){let el=document.querySelector('[data-player="'+p.pid+'"]');if(el&&p.pid!==session.pid){el.style.left=p.x+'%';el.style.top=p.y+'%'}}});
 window.chooseEntry=view=>{entryView=view;message='';draw()};
-window.create=(format='teams')=>act('create',{format,teamCount:20},r=>{session={code:r.code,host:true};localStorage.setItem('ecoquestSession',JSON.stringify(session))});
+window.create=(format='teams')=>{localStorage.removeItem('ecoquestSession');session=null;state=null;act('create',{format,teamCount:20},r=>{session={code:r.code,host:true};localStorage.setItem('ecoquestSession',JSON.stringify(session))});};
 window.join=()=>{let code=document.querySelector('#code').value,name=document.querySelector('#name').value,teamId=document.querySelector('#team').value;act('join',{code,name,teamId},r=>{session={code:r.code,pid:r.pid,teamId:r.teamId,host:false};localStorage.setItem('ecoquestSession',JSON.stringify(session))})};
 window.changeCountry=e=>act('chooseCountry',{country:e.value});
 window.changeCountryName=country=>act('chooseCountry',{country});
@@ -26,7 +27,7 @@ window.sort=bin=>{let id=state?.teams[session.teamId]?.players.find(p=>p.id===se
 window.sendChat=()=>{const el=document.querySelector('#chatEntry');if(!el)return;const text=el.value;el.value='';act('teamChat',{text})};
 window.signal=i=>act('teamSignal',{signal:['Follow me!','Waste near the river!','I need help!','Take waste to the bins!','You take the north side!','Great work, team!'][i]});
 function drawChat(){const el=document.querySelector('#chatMessages'),t=state?.teams[session?.teamId];if(el&&t){el.innerHTML=teamMessages.slice(-20).map(m=>'<div class="chatmsg"><b>'+html(m.name)+'</b>: '+html(m.text)+'</div>').join('');el.scrollTop=el.scrollHeight}const feedback=document.querySelector('#chatFeedback');if(feedback)feedback.textContent=message||''}
-window.leave=()=>{localStorage.removeItem('ecoquestSession');location.reload()};
+window.leave=()=>{localStorage.removeItem('ecoquestSession');session=null;state=null;message='';entryView='choice';location.reload()};
 function draw(){if(!session||!state){root.innerHTML='<main class="welcome"><div class="landing-shell"><div class="landing-brand"><span class="brand-mark" aria-hidden="true">🌍♻️</span><span>JDO GLOBAL CLUB <em>THE GLOBAL CLEANUP HUNT</em></span></div><div class="landing-intro"><span class="overline">A JDO GLOBAL CLUB ADVENTURE</span><h1>Global Club <span>Hunt!</span></h1><p>Explore the world. Hunt for litter. Clean up together!</p></div>'+(
 entryView==='choice'?'<div class="entrychoices" role="group" aria-label="Choose how to play"><button class="entrycard hostchoice" onclick="chooseEntry(\'host\')"><span class="entryicon" aria-hidden="true">🎙️</span><span class="actioncopy"><strong>Host a game</strong><small>Create a challenge for your class or club</small></span><span class="actionarrow" aria-hidden="true">→</span></button><button class="entrycard playerchoice" onclick="chooseEntry(\'player\')"><span class="entryicon" aria-hidden="true">🎮</span><span class="actioncopy"><strong>Join as player</strong><small>Enter a game PIN from your club leader</small></span><span class="actionarrow" aria-hidden="true">→</span></button></div><p class="landing-foot">Live games or homework · Team or solo · Up to 100 players</p>':
 entryView==='host'?'<div class="entryform"><button class="backlink" onclick="chooseEntry(\'choice\')">← Back</button><h2>Host a game</h2><p>Choose your game format. You can select Live or Homework on the next screen.</p><div class="format-picks"><button onclick="create(\'teams\')">👥 Team battle<small>Up to 20 teams · 100 players total</small></button><button onclick="create(\'solo\')">⚡ Solo battle<small>Up to 100 individual players</small></button></div></div>':
