@@ -8,6 +8,8 @@ socket.on('teamMessage',p=>{if(state?.format==='solo'?Math.floor(p.teamId/10)!==
 socket.on('teamHistory',p=>{if(!session||p.teamId===session.teamId){teamMessages=p.messages||[];drawChat()}});
 socket.on('moderation',m=>{message=m.text;drawChat()});
 socket.on('state',s=>{state=s;draw()});
+socket.on('connect_error',()=>{message='Unable to connect to the game server. Check Wi-Fi or try refreshing.';draw()});
+socket.on('disconnect',()=>{message='Connection lost. Reconnecting to the game…';draw()});
 socket.on('position',p=>{const t=state?.teams[p.teamId],who=t?.players.find(x=>x.id===p.pid);if(who){who.x=p.x;who.y=p.y}if(p.teamId===session?.teamId){let el=document.querySelector('[data-player="'+p.pid+'"]');if(el&&p.pid!==session.pid){el.style.left=p.x+'%';el.style.top=p.y+'%'}}});
 window.chooseEntry=view=>{entryView=view;message='';draw()};
 window.create=(format='teams')=>{localStorage.removeItem('ecoquestSession');session=null;state=null;act('create',{format,teamCount:20},r=>{session={code:r.code,host:true};localStorage.setItem('ecoquestSession',JSON.stringify(session))});};
