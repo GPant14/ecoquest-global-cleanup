@@ -15,7 +15,7 @@ window.changeCountry=e=>act('chooseCountry',{country:e.value});
 window.changeCountryName=country=>act('chooseCountry',{country});
 window.zone=id=>act('chooseZone',{zone:id});
 window.setMode=mode=>act('setMode',{mode,days:7});
-window.start=()=>{const sec=document.querySelector('#duration')?.value||300;act('start',{seconds:sec})};
+window.start=()=>{const sec=document.querySelector('#duration')?.value||300;if(state?.mode==='homework'){socket.emit('setMode',{mode:'homework',days:Number(document.querySelector('#days')?.value||7)},res=>{if(!res?.ok){message=res?.error||'Could not set deadline';draw();return}act('start',{seconds:sec})})}else act('start',{seconds:sec})};
 window.finish=()=>act('finish',{});
 window.worldClick=e=>{const r=document.querySelector('#world')?.getBoundingClientRect();if(r)runTo(Math.max(2,Math.min(98,(e.clientX-r.left)/r.width*100)),Math.max(2,Math.min(98,(e.clientY-r.top)/r.height*100)))};
 window.pick=id=>{const it=state?.teams[session.teamId]?.items.find(i=>i.id===id);if(!it||it.picked||it.carrier)return;runTo(it.x,it.y,()=>{socket.emit('pickup',{itemId:id},r=>{if(!r?.ok){message=r?.error||'Another teammate got there first!';effect('Too late!','bad')}else effect('🧤 Collected!');draw()})})};
