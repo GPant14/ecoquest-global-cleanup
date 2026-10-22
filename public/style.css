@@ -104,3 +104,13 @@ body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radi
 .gameworld .litter{background:#fffef0;box-shadow:0 0 0 4px #fff8a7ad,0 6px 13px #15383380}
 .gameworld .character .person{font-size:39px}
 @media(max-width:630px){.site-art{width:92px;height:68px}.site-choice{min-height:85px}}
+
+/* Player legibility and game-first placement */
+.gameworld{height:min(66vh,640px);min-height:430px;border:5px solid #fff;box-shadow:0 0 0 3px #d4eadf,0 22px 42px #234e4840;animation:none!important}
+.gameworld .character{z-index:9;background:#ffffffc2;border:2px solid #fff;border-radius:40px;padding:4px;box-shadow:0 5px 12px #183b4a55}
+.gameworld .character.myavatar{outline:4px solid #ffd540;box-shadow:0 0 0 8px #ffd54055,0 5px 18px #142f3455}
+.gameworld .character small{max-width:115px;font-size:12px;padding:4px 7px}
+.avatars{display:flex;gap:12px;align-items:center;font-size:15px}.avatars strong{font-size:14px;white-space:nowrap}.avatars small{font-weight:650;line-height:1.5}
+.bins{position:sticky;bottom:8px;z-index:12;background:#fffffff2;border:2px solid #dceade;border-radius:18px;padding:10px;box-shadow:0 10px 24px #1a54392c}
+.bins button{min-height:55px;font-size:13px}
+@media(max-width:650px){.gameworld{height:56vh;min-height:360px}.bins{grid-template-columns:1fr 1fr}.gameworld .character small{font-size:10px}}
