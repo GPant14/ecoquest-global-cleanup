@@ -114,3 +114,12 @@ body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radi
 .bins{position:sticky;bottom:8px;z-index:12;background:#fffffff2;border:2px solid #dceade;border-radius:18px;padding:10px;box-shadow:0 10px 24px #1a54392c}
 .bins button{min-height:55px;font-size:13px}
 @media(max-width:650px){.gameworld{height:56vh;min-height:360px}.bins{grid-template-columns:1fr 1fr}.gameworld .character small{font-size:10px}}
+
+/* Teacher Google sign-in always visible; Google replaces placeholder after OAuth setup */
+.google-entry{margin:0 0 22px;padding:18px;border:1px solid #cfd8ff;border-radius:15px;background:#f8f9ff;text-align:center}
+.google-entry label{display:block;text-align:left;font-size:13px;font-weight:700}
+#googleButton{min-height:46px;display:flex;align-items:center;justify-content:center;margin:10px 0}
+.google-login-button{width:100%;max-width:330px;background:white;color:#555be3;border:1.5px solid #5b61ff;display:flex;justify-content:center;align-items:center;gap:12px;min-height:46px;font-weight:800;border-radius:12px;box-shadow:none}
+.google-login-button:hover{background:#f3f3ff;transform:none}
+.google-g{font-family:Arial,sans-serif;font-size:23px;font-weight:900;color:#4285f4}
+#googleStatus{font-size:12px;margin:8px 0 0;line-height:1.5}
