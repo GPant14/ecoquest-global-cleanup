@@ -123,3 +123,5 @@ body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radi
 .google-login-button:hover{background:#f3f3ff;transform:none}
 .google-g{font-family:Arial,sans-serif;font-size:23px;font-weight:900;color:#4285f4}
 #googleStatus{font-size:12px;margin:8px 0 0;line-height:1.5}
+
+.teacher-auth-tabs{display:flex;gap:8px;margin:0 0 20px;padding:6px;background:#eef2ff;border-radius:14px}.teacher-auth-tabs a{flex:1;text-decoration:none;text-align:center;padding:12px 9px;border-radius:10px;color:#344568;font-weight:800;font-size:14px}.teacher-auth-tabs a.active{background:#6340d9;color:white;box-shadow:0 2px 7px #3631802b}.entryform .teacher-auth-tabs+h2{margin-top:7px}
