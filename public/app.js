@@ -1,4 +1,4 @@
-const socket=io(),root=document.querySelector('#app');let state=null,session=JSON.parse(localStorage.getItem('ecoquestSession')||'null'),selected=null,message='',teamMessages=[],entryView='choice',commsOpen=false,chatDraft='',chatRecipient='';
+const socket=io({transports:['polling','websocket'],upgrade:true,timeout:30000}),root=document.querySelector('#app');let savedSession=null;try{savedSession=JSON.parse(localStorage.getItem('ecoquestSession')||'null')}catch(e){savedSession=null}let state=null,session=savedSession,selected=null,message='',teamMessages=[],entryView='choice',commsOpen=false,chatDraft='',chatRecipient='';
 const bins=[['recycle','♻️ Recycle'],['organic','🌱 Compost'],['landfill','🗑️ Landfill'],['hazard','🔋 E-waste']];
 const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function act(event,data,fn){socket.emit(event,data,r=>{if(!r?.ok){message=r?.error||'Please try again';draw()}else{message='';fn?.(r);draw()}})}
