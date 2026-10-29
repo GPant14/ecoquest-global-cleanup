@@ -37,7 +37,7 @@ window.teacherAuth=async action=>{
  const issue=(text)=>{const el=document.querySelector('#teacherFormError');if(el){el.textContent=text;el.hidden=false}else{message=text;draw()}};
  if(action==='register'){
   if(name.length<2){issue('Please enter your name (at least 2 characters).');document.querySelector('#teacherName')?.focus();return}
-  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){issue('Please enter a valid email address, for example teacher@gmail.com.');document.querySelector('#teacherEmail')?.focus();return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){issue('Please enter a valid email address, for example teacher@gmail.com.');document.querySelector('#teacherEmail')?.focus();return}
   if(password.length<12||password.length>128){issue('Please choose a password with at least 12 characters (maximum 128).');document.querySelector('#teacherPassword')?.focus();return}
  }else if(!email||!password){issue('Enter your registered email and password.');return}
  const button=document.querySelector('#teacherSubmit');if(button){button.disabled=true;button.textContent='Please wait…'}
