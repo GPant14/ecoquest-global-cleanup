@@ -129,3 +129,5 @@ body{background:radial-gradient(circle at 10% 8%,#e8ddff 0,transparent 33%),radi
 .teacher-form-error:not([hidden]){display:block;color:#b42318;background:#fff0ee;border:1px solid #f5c1bb;border-radius:9px;padding:10px;font-size:14px;text-align:left}.password-hint{font-size:12px;text-align:left;margin:2px 0 6px;color:#596e62}
 
 .report-team{border:1px solid #d4e3d8;border-radius:12px;padding:14px;margin:10px 0;background:#f8fcf9;text-align:left}.report-team ul{margin:8px 0;padding-left:22px}.report-team li{padding:3px 0}.report-team h3{margin:0}
+
+.host-header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.teacher-logout{background:#fff;color:#6b3b9b;border:1px solid #d1bde9;padding:9px 13px;border-radius:10px;font-size:13px}.teacher-signed-in{display:flex;gap:12px;justify-content:center;align-items:center;margin:14px auto;color:#34554a;font-size:13px;flex-wrap:wrap}@media(max-width:650px){.host-header-actions{justify-content:flex-end}.teacher-logout{padding:8px}}
