@@ -21,7 +21,7 @@ function build(game){
   endsAt:game.endsAt||null,finishedAt:game.finishedAt||null,
   savedAt:new Date().toISOString(),
   playerCount:teams.reduce((n,team)=>n+team.players.length,0),
-  playedCount:teams.reduce((n,team)=>n+team.players.filter(p=>p.played===true||Number(p.itemsSorted)>0).length,0),teams
+  playedCount:active.reduce((n,team)=>n+team.players.filter(p=>p.played===true||Number(p.itemsSorted)>0).length,0),teams
  }
 }
 async function init(){
@@ -50,14 +50,20 @@ async function list(teacherId){
 
 async function impact(teacherId=null){
  if(!ready)throw Error('Impact metrics are not available');
- const args=[],filter=teacherId===null?'':'WHERE teacher_id=$1';
+ const args=[],filter=teacherId===null?'':'WHERE r.teacher_id=$1';
  if(teacherId!==null)args.push(teacherId);
  const sql=`SELECT
  COUNT(*) FILTER (WHERE COALESCE((report->>'startedAt')::bigint,0)>0)::integer AS sessions_hosted,
  COUNT(DISTINCT teacher_id) FILTER (WHERE COALESCE((report->>'startedAt')::bigint,0)>0)::integer AS teachers_hosted,
  COALESCE(SUM(CASE WHEN COALESCE((report->>'startedAt')::bigint,0)>0 THEN COALESCE((report->>'playerCount')::integer,0) ELSE 0 END),0)::integer AS student_entries,
- COALESCE(SUM(CASE WHEN COALESCE((report->>'startedAt')::bigint,0)>0 THEN COALESCE((report->>'playedCount')::integer,0) ELSE 0 END),0)::integer AS active_plays
- FROM ecoquest_game_reports ${filter}`;
+ COALESCE(SUM(CASE WHEN COALESCE((report->>'startedAt')::bigint,0)>0 THEN GREATEST(COALESCE((report->>'playedCount')::integer,0),COALESCE(observed.confirmed_sorters,0)) ELSE 0 END),0)::integer AS active_plays
+ FROM ecoquest_game_reports AS r
+ LEFT JOIN LATERAL (
+   SELECT COUNT(*)::integer AS confirmed_sorters
+   FROM jsonb_array_elements(COALESCE(r.report->'teams','[]'::jsonb)) AS t(team)
+   CROSS JOIN LATERAL jsonb_array_elements(COALESCE(t.team->'players','[]'::jsonb)) AS p(player)
+   WHERE COALESCE((p.player->>'itemsSorted')::integer,0)>0
+ ) AS observed ON TRUE ${filter}`;
  const row=(await storage.query(sql,args)).rows[0];
  return {sessionsHosted:row.sessions_hosted,teachersHosted:row.teachers_hosted,studentEntries:row.student_entries,activePlays:row.active_plays,
   note:'Counts represent sessions and participations, not unique people. Historical active-play data may be incomplete.'};
