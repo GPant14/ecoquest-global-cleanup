@@ -20,7 +20,8 @@ function build(game){
   createdAt:game.createdAt||null,startedAt:game.startedAt||null,
   endsAt:game.endsAt||null,finishedAt:game.finishedAt||null,
   savedAt:new Date().toISOString(),
-  playerCount:teams.reduce((n,team)=>n+team.players.length,0),teams
+  playerCount:teams.reduce((n,team)=>n+team.players.length,0),
+  playedCount:teams.reduce((n,team)=>n+team.players.filter(p=>p.played===true||Number(p.itemsSorted)>0).length,0),teams
  }
 }
 async function init(){
@@ -46,9 +47,24 @@ async function list(teacherId){
  const result=await storage.query('SELECT report FROM ecoquest_game_reports WHERE teacher_id=$1 ORDER BY updated_at DESC LIMIT 100',[teacherId]);
  return result.rows.map(row=>{const r=row.report;return {gameCode:r.gameCode,mode:r.mode,format:r.format,status:r.status,createdAt:r.createdAt,startedAt:r.startedAt,finishedAt:r.finishedAt,playerCount:r.playerCount,teams:r.teams?.length||0,topScore:r.teams?.[0]?.score||0}})
 }
+
+async function impact(teacherId=null){
+ if(!ready)throw Error('Impact metrics are not available');
+ const args=[],filter=teacherId===null?'':'WHERE teacher_id=$1';
+ if(teacherId!==null)args.push(teacherId);
+ const sql=`SELECT
+ COUNT(*) FILTER (WHERE COALESCE((report->>'startedAt')::bigint,0)>0)::integer AS sessions_hosted,
+ COUNT(DISTINCT teacher_id) FILTER (WHERE COALESCE((report->>'startedAt')::bigint,0)>0)::integer AS teachers_hosted,
+ COALESCE(SUM(CASE WHEN COALESCE((report->>'startedAt')::bigint,0)>0 THEN COALESCE((report->>'playerCount')::integer,0) ELSE 0 END),0)::integer AS student_entries,
+ COALESCE(SUM(CASE WHEN COALESCE((report->>'startedAt')::bigint,0)>0 THEN COALESCE((report->>'playedCount')::integer,0) ELSE 0 END),0)::integer AS active_plays
+ FROM ecoquest_game_reports ${filter}`;
+ const row=(await storage.query(sql,args)).rows[0];
+ return {sessionsHosted:row.sessions_hosted,teachersHosted:row.teachers_hosted,studentEntries:row.student_entries,activePlays:row.active_plays,
+  note:'Counts represent sessions and participations, not unique people. Historical active-play data may be incomplete.'};
+}
 async function get(teacherId,code){
  if(!ready)return null;
  const result=await storage.query('SELECT report FROM ecoquest_game_reports WHERE teacher_id=$1 AND code=$2',[teacherId,code]);
  return result.rows[0]?.report||null;
 }
-module.exports={init,save,schedule,list,get,build,isReady:()=>ready};
+module.exports={init,save,schedule,list,get,build,impact,isReady:()=>ready};
